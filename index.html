@@ -151,20 +151,26 @@
         }
 
         .profile-img-container {
-            width: 180px;
-            height: 180px;
-            border-radius: 50%;
-            overflow: hidden;
-            margin-bottom: 2rem;
-            border: 4px solid var(--primary-color);
-            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
-        }
+  width: 180px;
+  height: 180px;
+  border-radius: 50%;
+  overflow: hidden;
+  margin-bottom: 2rem;
+  border: 4px solid #2563eb;
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+  background: #ffffff; /* Ensures contrast */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
 
-        .profile-img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
+.profile-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
 
         .hero h1 {
             font-size: 3.5rem;
@@ -405,7 +411,8 @@
             </div>
             <h1>Abdul Kalam</h1>
             <h2>AI/ML Student | Python & Java Developer | Web Developer</h2>
-            <a href="resume.pdf" class="btn" download>Download Resume</a>
+            <a href="Resume.pdf" class="btn" download>Download Resume</a>
+
         </section>
 
         <!-- About Section -->
@@ -567,3 +574,4 @@
 
 
 </html>
+
