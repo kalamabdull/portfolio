@@ -1,0 +1,568 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Abdul Kalam | AI/ML Student Portfolio</title>
+    <style>
+        /* --- CSS Variables & Theme --- */
+        :root {
+            --primary-color: #2563eb;
+            /* Blue Accent */
+            --primary-hover: #1d4ed8;
+            --bg-color: #ffffff;
+            --text-color: #1f2937;
+            --section-bg: #f3f4f6;
+            --card-bg: #ffffff;
+            --card-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            --nav-bg: rgba(255, 255, 255, 0.9);
+            --transition-speed: 0.3s;
+        }
+
+        [data-theme="dark"] {
+            --primary-color: #3b82f6;
+            --primary-hover: #60a5fa;
+            --bg-color: #111827;
+            --text-color: #f9fafb;
+            --section-bg: #1f2937;
+            --card-bg: #374151;
+            --card-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.5);
+            --nav-bg: rgba(17, 24, 39, 0.9);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+        }
+
+        scroll-behavior: smooth;
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            transition: background-color var(--transition-speed), color var(--transition-speed);
+            line-height: 1.6;
+        }
+
+        /* --- Animations --- */
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+
+            to {
+                opacity: 1;
+            }
+        }
+
+        @keyframes slideUp {
+            from {
+                transform: translateY(30px);
+                opacity: 0;
+            }
+
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        .animate-on-scroll {
+            opacity: 0;
+            /* Will be handled by IntersectionObserver */
+        }
+
+        .animate-in {
+            animation: slideUp 0.8s ease-out forwards;
+        }
+
+        /* --- Header / Nav --- */
+        header {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background: var(--nav-bg);
+            backdrop-filter: blur(10px);
+            z-index: 1000;
+            box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+        }
+
+        nav {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .nav-logo {
+            font-weight: 700;
+            font-size: 1.5rem;
+            color: var(--primary-color);
+            text-decoration: none;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            list-style: none;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: var(--text-color);
+            font-weight: 500;
+            transition: color 0.2s;
+        }
+
+        .nav-links a:hover {
+            color: var(--primary-color);
+        }
+
+        /* --- Theme Toggle --- */
+        .theme-toggle {
+            background: none;
+            border: none;
+            cursor: pointer;
+            color: var(--text-color);
+            font-size: 1.2rem;
+            padding: 0.5rem;
+            transition: transform 0.2s;
+        }
+
+        .theme-toggle:hover {
+            transform: rotate(15deg);
+        }
+
+        /* --- Hero Section --- */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 2rem;
+            padding-top: 5rem;
+        }
+
+        .profile-img-container {
+            width: 180px;
+            height: 180px;
+            border-radius: 50%;
+            overflow: hidden;
+            margin-bottom: 2rem;
+            border: 4px solid var(--primary-color);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+        }
+
+        .profile-img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .hero h1 {
+            font-size: 3.5rem;
+            margin-bottom: 1rem;
+            background: linear-gradient(to right, var(--primary-color), #8b5cf6);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .hero h2 {
+            font-size: 1.5rem;
+            font-weight: 400;
+            color: var(--text-color);
+            opacity: 0.9;
+            margin-bottom: 2rem;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 0.8rem 2rem;
+            background-color: var(--primary-color);
+            color: white;
+            text-decoration: none;
+            border-radius: 9999px;
+            font-weight: 600;
+            transition: background-color 0.2s, transform 0.2s;
+            box-shadow: 0 4px 6px -1px rgba(37, 99, 235, 0.3);
+        }
+
+        .btn:hover {
+            background-color: var(--primary-hover);
+            transform: translateY(-2px);
+        }
+
+        /* --- Common Section Styles --- */
+        section {
+            padding: 5rem 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .section-title {
+            text-align: center;
+            font-size: 2.5rem;
+            margin-bottom: 3rem;
+            position: relative;
+        }
+
+        .section-title::after {
+            content: '';
+            display: block;
+            width: 60px;
+            height: 4px;
+            background: var(--primary-color);
+            margin: 1rem auto 0;
+            border-radius: 2px;
+        }
+
+        /* --- About Section --- */
+        .about-content {
+            max-width: 800px;
+            margin: 0 auto;
+            text-align: center;
+            font-size: 1.125rem;
+            color: var(--text-color);
+            opacity: 0.8;
+        }
+
+        /* --- Skills Section --- */
+        .bg-offset {
+            background-color: var(--section-bg);
+            /* Make this section span full width */
+            width: 100vw;
+            position: relative;
+            left: 50%;
+            right: 50%;
+            margin-left: -50vw;
+            margin-right: -50vw;
+            padding-left: 2rem;
+            padding-right: 2rem;
+        }
+
+        .skills-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 1rem;
+        }
+
+        .skill-chip {
+            padding: 0.8rem 1.5rem;
+            background-color: var(--card-bg);
+            border-radius: 9999px;
+            box-shadow: var(--card-shadow);
+            font-weight: 500;
+            transition: transform 0.2s, background-color 0.2s;
+            border: 1px solid transparent;
+        }
+
+        .skill-chip:hover {
+            transform: scale(1.05);
+            border-color: var(--primary-color);
+        }
+
+        /* --- Projects Section --- */
+        .projects-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+
+        .card {
+            background-color: var(--card-bg);
+            border-radius: 1rem;
+            overflow: hidden;
+            box-shadow: var(--card-shadow);
+            transition: transform 0.3s ease;
+            padding: 2rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+        }
+
+        .card h3 {
+            font-size: 1.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .card p {
+            font-size: 1rem;
+            opacity: 0.8;
+            margin-bottom: 1.5rem;
+        }
+
+        .card-tag {
+            font-size: 0.875rem;
+            color: var(--primary-color);
+            background: rgba(37, 99, 235, 0.1);
+            padding: 0.25rem 0.75rem;
+            border-radius: 9999px;
+            align-self: flex-start;
+        }
+
+        /* --- Certifications Section --- */
+        .cert-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .cert-item {
+            background-color: var(--card-bg);
+            padding: 1.5rem;
+            border-radius: 1rem;
+            box-shadow: var(--card-shadow);
+            text-align: center;
+            border-left: 5px solid var(--primary-color);
+        }
+
+        /* --- Contact Section --- */
+        .contact-container {
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+            align-items: center;
+        }
+
+        .contact-link {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: var(--text-color);
+            text-decoration: none;
+            font-size: 1.25rem;
+            transition: color 0.2s;
+        }
+
+        .contact-link:hover {
+            color: var(--primary-color);
+        }
+
+        /* --- Footer --- */
+        footer {
+            background-color: var(--section-bg);
+            padding: 2rem;
+            text-align: center;
+            margin-top: 4rem;
+        }
+
+        /* --- Mobile Responsive --- */
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+
+            .nav-links {
+                display: none;
+                /* Simple hide for small screens for now, could add hamburger later */
+            }
+
+            nav {
+                justify-content: space-between;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <header>
+        <nav>
+            <a href="#" class="nav-logo">Abdul Kalam</a>
+            <ul class="nav-links">
+                <li><a href="#about">About</a></li>
+                <li><a href="#skills">Skills</a></li>
+                <li><a href="#projects">Projects</a></li>
+                <li><a href="#certifications">Certifications</a></li>
+                <li><a href="#contact">Contact</a></li>
+            </ul>
+            <button class="theme-toggle" id="theme-toggle" aria-label="Toggle Dark Mode">
+                🌙
+            </button>
+        </nav>
+    </header>
+
+    <main>
+        <!-- Hero Section -->
+        <section class="hero animate-on-scroll">
+            <div class="profile-img-container">
+                <img src="profile.jpeg" alt="Abdul Kalam Profile" class="profile-img">
+            </div>
+            <h1>Abdul Kalam</h1>
+            <h2>AI/ML Student | Python & Java Developer | Web Developer</h2>
+            <a href="resume.pdf" class="btn" download>Download Resume</a>
+        </section>
+
+        <!-- About Section -->
+        <section id="about" class="animate-on-scroll">
+            <h2 class="section-title">About Me</h2>
+            <div class="about-content">
+                <p>Hello! I am a passionate AI/ML student dedicated to solving real-world problems through data and
+                    code. With a strong foundation in Python, Java, and Web Technologies, I love building intelligent
+                    systems and intuitive web applications. I am always eager to learn new technologies and take on
+                    challenging projects.</p>
+            </div>
+        </section>
+
+        <!-- Skills Section -->
+        <section id="skills" class="bg-offset animate-on-scroll">
+            <div style="padding-top: 5rem; padding-bottom: 5rem; max-width: 1200px; margin: 0 auto;">
+                <h2 class="section-title">Technical Skills</h2>
+                <div class="skills-container">
+                    <span class="skill-chip">Python</span>
+                    <span class="skill-chip">Java</span>
+                    <span class="skill-chip">HTML5 & CSS3</span>
+                    <span class="skill-chip">JavaScript</span>
+                    <span class="skill-chip">MySQL</span>
+                    <span class="skill-chip">MongoDB</span>
+                    <span class="skill-chip">Git & GitHub</span>
+                    <span class="skill-chip">Tableau</span>
+                    <span class="skill-chip">Power BI</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- Projects Section -->
+        <section id="projects" class="animate-on-scroll">
+            <h2 class="section-title">Projects</h2>
+            <div class="projects-grid">
+                <div class="card">
+                    <div>
+                        <h3>CRM Application</h3>
+                        <p>A comprehensive Customer Relationship Management system built to manage client interactions
+                            efficiently.</p>
+                    </div>
+                    <span class="card-tag">Python + MySQL</span>
+                </div>
+                <div class="card">
+                    <div>
+                        <h3>AI Sign Language Detector</h3>
+                        <p>An integrated computer vision project that translates sign language gestures into text in
+                            real-time.</p>
+                    </div>
+                    <span class="card-tag">AI/ML + Python</span>
+                </div>
+                <div class="card">
+                    <div>
+                        <h3>Movie Recommendation System</h3>
+                        <p>A content-based recommendation engine suggesting movies based on user preferences and viewing
+                            history.</p>
+                    </div>
+                    <span class="card-tag">Machine Learning</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- Certifications Section -->
+        <section id="certifications" class="bg-offset animate-on-scroll">
+            <div style="padding-top: 5rem; padding-bottom: 5rem; max-width: 1200px; margin: 0 auto;">
+                <h2 class="section-title">Certifications</h2>
+                <div class="cert-grid">
+                    <div class="cert-item">
+                        <h3>AI Specialist Certification</h3>
+                    </div>
+                    <div class="cert-item">
+                        <h3>Cynux Era Ethical Hacking</h3>
+                    </div>
+                    <div class="cert-item">
+                        <h3>TCM Ethical Hacking</h3>
+                    </div>
+                    <div class="cert-item">
+                        <h3>TCM Soft Skills</h3>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Contact Section -->
+        <section id="contact" class="animate-on-scroll">
+            <h2 class="section-title">Get In Touch</h2>
+            <div class="contact-container">
+                <a href="https://linkedin.com/" target="_blank" class="contact-link">
+                    <!-- SVG Icon for LinkedIn -->
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                        fill="currentColor">
+                        <path
+                            d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z" />
+                    </svg>
+                    Connect on LinkedIn
+                </a>
+                <a href="mailto:kalamabdulas2014@gmail.com" class="contact-link">
+                    <!-- SVG Icon for Email -->
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
+                        <polyline points="22,6 12,13 2,6"></polyline>
+                    </svg>
+                    kalamabdulas2014@gmail.com
+                </a>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <p>&copy; 2024 Abdul Kalam. All rights reserved.</p>
+    </footer>
+
+    <script>
+        // --- Dark Mode Toggle ---
+        const themeToggle = document.getElementById('theme-toggle');
+        const htmlElement = document.documentElement;
+
+        // Check for saved preference
+        const savedTheme = localStorage.getItem('theme');
+        if (savedTheme) {
+            htmlElement.setAttribute('data-theme', savedTheme);
+            updateIcon(savedTheme);
+        }
+
+        themeToggle.addEventListener('click', () => {
+            const currentTheme = htmlElement.getAttribute('data-theme');
+            const newTheme = currentTheme === 'light' ? 'dark' : 'light';
+
+            htmlElement.setAttribute('data-theme', newTheme);
+            localStorage.setItem('theme', newTheme);
+            updateIcon(newTheme);
+        });
+
+        function updateIcon(theme) {
+            themeToggle.textContent = theme === 'light' ? '🌙' : '☀️';
+        }
+
+        // --- Intersection Observer for Scroll Animations ---
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('animate-in');
+                    observer.unobserve(entry.target); // Only animate once
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.animate-on-scroll').forEach(el => {
+            observer.observe(el);
+        });
+    </script>
+</body>
+
+</html>
